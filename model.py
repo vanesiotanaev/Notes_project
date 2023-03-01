@@ -9,7 +9,7 @@ def main_menu() -> int:
     "\n2. Редактировать заметку;"
     "\n3. Посмотреть список заметок;"
     "\n4. Удалить заметку;"
-    "\n5. Вернуться в Главное меню."
+    "\n5. Выбрать заметки по дате."
     "\n\nВыберите действие (1-5): ")
 
     while not (user_choice.isdigit() and int(user_choice) in [1, 2, 3, 4, 5]):
@@ -19,7 +19,7 @@ def main_menu() -> int:
                             "\n2. Редактировать заметку;"
                             "\n3. Посмотреть список заметок;"
                             "\n4. Удалить заметку;"
-                            "\n5. Вернуться в Главное меню."
+                            "\n5. Выбрать заметки по дате."
                             "\n\nВыберите действие (1-5): ")
 
     return int(user_choice)
@@ -27,6 +27,11 @@ def main_menu() -> int:
 def write_id_to_file(path, id):
   with open(path, 'a') as file:
       file.write(str(id) + '\n')
+
+def update_ids_file(path, ids_list):
+  with open(path, 'w') as file:
+      for id in ids_list:
+        file.write(str(id) + '\n')
 
 def read_ids_from_file(path):
   ids_list = []
@@ -91,11 +96,34 @@ def delete_json_note(note_id):
     json.dump(data, json_file)
   print('Заметка удалена!')
 
+def choose_note_by_date():
+  print("")
+  print("Выбор заметки по дате")
+  print("")
+  user_year = input("Введите год (гггг): ")
+  while not (user_year.isdigit() and len(user_year) == 4):
+    user_year = input("Ошибка ввода! Введите год: ")
+  user_month = input("Введите месяц (мм): ")
+  while not (user_month.isdigit() and len(user_month) == 2):
+    user_month = input("Ошибка ввода! Введите месяц: ")
+  user_day = input("Введите день (дд): ")
+  while not (user_day.isdigit() and len(user_day) == 2):
+    user_day = input("Ошибка ввода! Введите день: ")
+  
+  date = user_year + '-' + user_month + '-' + user_day
+
+  with open ('json_notes.json', 'r') as json_file:
+    data = json.load(json_file)
+    print("Список заметок по дате " + date + ":")
+    for note in data:
+      if note['note_date'] == date:
+        print(note)
+
 
 def note_choice(ids_list):
-  user_choice = input("Введите id заметки, подлежащей изменению: ")
+  user_choice = input("Введите id заметки, подлежащей выбранному действию: ")
   while not (user_choice.isdigit() and (user_choice in ids_list)):
-    user_choice = input("Ошибка ввода! Введите id заметки, подлежащей изменению: ")
+    user_choice = input("Ошибка ввода! Введите id заметки, подлежащей выбранному действию: ")
   
   return user_choice
 

@@ -50,17 +50,27 @@ def button():
             time.sleep(1)
     
     if action == 3:
+        model.show_json_notes()
+    
+    if action == 4:
         try:
-            model.show_json_notes()
+            if len(model.read_json_notes_as_list()) == 0:
+                time.sleep(1)
+                print('')
+                print('Заметок нет!')
+                time.sleep(1)
+            else:
+                ids_list = model.read_ids_from_file(path_ids)
+                model.show_json_notes()
+                note_choice = model.note_choice(ids_list)
+                model.delete_json_note(note_choice)
+                ids_list.remove(note_choice)
+                model.update_ids_file(path_ids, ids_list)
         except:
             time.sleep(1)
             print('')
             print('Заметок нет!')
             time.sleep(1)
     
-    if action == 4:
-        ids_list = model.read_ids_from_file(path_ids)
-        model.show_json_notes()
-        note_choice = model.note_choice(ids_list)
-        model.delete_json_note(note_choice)
-        
+    if action == 5:
+        model.choose_note_by_date()
