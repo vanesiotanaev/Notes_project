@@ -13,18 +13,16 @@ def button():
             ids_list = model.read_ids_from_file(path_ids)
             unique_id = model.generate_unique_id(ids_list)
             model.write_id_to_file(path_ids, unique_id)
-            print(model.read_ids_from_file(path_ids))
         except:
-            unique_id = random.randint(1, 100)
+            unique_id = 1
             model.write_id_to_file(path_ids, unique_id)
         
         note_header = input("Введите заголовок заметки: ")
         note_body = input("Введите текст заметки: ")
         note_date = str(datetime.now().date())
         note = Note(note_id=unique_id, note_header=note_header, note_body=note_body, note_date=note_date)
-        # note.show_object()
         try:
-            notes_list = model.read_json_notes()
+            notes_list = model.read_json_notes_as_list()
         except:
             notes_list = []
         note.add_note_to_json(notes_list)
@@ -33,14 +31,36 @@ def button():
         time.sleep(1)
     
     if action == 2:
-        # try:
-            notes_list = model.read_json_notes()
+        try:
+            notes_list = model.read_json_notes_as_list()
             ids_list = model.read_ids_from_file(path_ids)
+            model.show_json_notes()
             note_choice = model.note_choice(ids_list)
-            print(model.read_json_notes())
-        # except:
-        #     time.sleep(1)
-        #     print('')
-        #     print('Заметок нет!')
-        #     time.sleep(1)
-
+            new_header = input('Введите новый заголовок заметки: ')
+            new_body = input('Введите новый текст заметки: ')
+            new_date = str(datetime.now().date())
+            # note = Note(note_id=note_choice, note_header=new_header, note_body=new_body, note_date=new_date)
+            notes_list = model.header_edit(note_choice, notes_list, new_header)
+            notes_list = model.body_edit(note_choice, notes_list, new_body)
+            model.edit_json_note(note_choice, new_header, new_body, new_date)
+        except:
+            time.sleep(1)
+            print('')
+            print('Заметок нет!')
+            time.sleep(1)
+    
+    if action == 3:
+        try:
+            model.show_json_notes()
+        except:
+            time.sleep(1)
+            print('')
+            print('Заметок нет!')
+            time.sleep(1)
+    
+    if action == 4:
+        ids_list = model.read_ids_from_file(path_ids)
+        model.show_json_notes()
+        note_choice = model.note_choice(ids_list)
+        model.delete_json_note(note_choice)
+        
