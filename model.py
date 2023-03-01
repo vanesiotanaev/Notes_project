@@ -23,15 +23,18 @@ def main_menu() -> int:
 
     return int(user_choice)
 
+# Запись id вновь созданной заметки в txt-файл. 
 def write_id_to_file(path, id):
   with open(path, 'a') as file:
       file.write(str(id) + '\n')
-
+    
+# Обновление txt-файла c id заметок. Например, в случае, если просиходит удаление заметки.
 def update_ids_file(path, ids_list):
   with open(path, 'w') as file:
       for id in ids_list:
         file.write(str(id) + '\n')
 
+# Получение списка id заметок из txt-файла.
 def read_ids_from_file(path):
   ids_list = []
   test_str = ''
@@ -42,12 +45,14 @@ def read_ids_from_file(path):
 
   return ids_list
 
+# Создание уникального id для заметки.
 def generate_unique_id(ids_list):
   unique_id = random.randint(1, 5)
   while str(unique_id) in ids_list:
     unique_id = random.randint(1, 5)
   return unique_id
 
+# Получение списка, состоящего из заметок, хранящихся в json-файле.
 def read_json_notes_as_list():
   notes_list = []
   with open ('json_notes.json', 'r') as json_file:
@@ -57,6 +62,7 @@ def read_json_notes_as_list():
     
   return notes_list
 
+# Вывод всего json-файла c заметками в удобном формате
 def show_json_notes():
   with open ('json_notes.json', 'r') as json_file:
     data = json.load(json_file)
@@ -71,7 +77,7 @@ def show_json_notes():
       print('note_date: ' + note['note_date'])
       print('')
   
-
+# Редактирование заметки, выбранной по id, в json-файле.
 def edit_json_note(note_id, new_header, new_body, new_date):
   with open ('json_notes.json', 'r') as json_file:
     data = json.load(json_file)
@@ -85,6 +91,7 @@ def edit_json_note(note_id, new_header, new_body, new_date):
   with open('json_notes.json', 'w') as json_file:
     json.dump(data, json_file)
 
+# Удаление заметки, выбранной по id, из json-файла.
 def delete_json_note(note_id):
   with open ('json_notes.json', 'r') as json_file:
     data = json.load(json_file)
@@ -95,6 +102,7 @@ def delete_json_note(note_id):
     json.dump(data, json_file)
   print('Заметка удалена!')
 
+# Выбор всех заметок, которые соответствуют введенной пользователем дате.
 def choose_note_by_date():
   with open ('json_notes.json', 'r') as json_file:
     data = json.load(json_file)
@@ -118,7 +126,7 @@ def choose_note_by_date():
     if note['note_date'] == date:
       print(note)
 
-
+# Функция для получения от пользователя id заметки, с которой планируется взаимодействие.
 def note_choice(ids_list):
   user_choice = input("Введите id заметки, подлежащей выбранному действию: ")
   while not (user_choice.isdigit() and (user_choice in ids_list)):
@@ -126,6 +134,7 @@ def note_choice(ids_list):
   
   return user_choice
 
+# Отдельно изменение заголовка заметки, выбранной по id, в списке заметок (словарей).
 def header_edit(note_id, notes_list, new_header):
   for note in notes_list:
     if note_id in note.values():
@@ -133,6 +142,7 @@ def header_edit(note_id, notes_list, new_header):
   
   return notes_list
 
+# Отдельно изменение тела заметки, выбранной по id, в списке заметок (словарей).
 def body_edit(note_id, notes_list, new_body):
   for note in notes_list:
     if note_id in note.values():

@@ -18,6 +18,7 @@ class Note:
         print(self.note_body)
         print(self.note_date)
     
+    # Добавление объекта класса Note в json-файл.
     def add_note_to_json(self, notes_list):
         data = {'note_id': str(self.note_id),
                 'note_header': self.note_header,
