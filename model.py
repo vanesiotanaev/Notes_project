@@ -1,4 +1,3 @@
-from classes import Note
 import random
 import json
 
