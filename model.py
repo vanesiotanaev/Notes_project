@@ -97,6 +97,8 @@ def delete_json_note(note_id):
   print('Заметка удалена!')
 
 def choose_note_by_date():
+  with open ('json_notes.json', 'r') as json_file:
+    data = json.load(json_file)
   print("")
   print("Выбор заметки по дате")
   print("")
@@ -112,12 +114,10 @@ def choose_note_by_date():
   
   date = user_year + '-' + user_month + '-' + user_day
 
-  with open ('json_notes.json', 'r') as json_file:
-    data = json.load(json_file)
-    print("Список заметок по дате " + date + ":")
-    for note in data:
-      if note['note_date'] == date:
-        print(note)
+  print("Список заметок по дате " + date + ":")
+  for note in data:
+    if note['note_date'] == date:
+      print(note)
 
 
 def note_choice(ids_list):

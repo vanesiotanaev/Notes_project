@@ -1,5 +1,4 @@
 import model
-import random
 from datetime import datetime
 from classes import Note
 import time
@@ -39,7 +38,6 @@ def button():
             new_header = input('Введите новый заголовок заметки: ')
             new_body = input('Введите новый текст заметки: ')
             new_date = str(datetime.now().date())
-            # note = Note(note_id=note_choice, note_header=new_header, note_body=new_body, note_date=new_date)
             notes_list = model.header_edit(note_choice, notes_list, new_header)
             notes_list = model.body_edit(note_choice, notes_list, new_body)
             model.edit_json_note(note_choice, new_header, new_body, new_date)
@@ -73,4 +71,10 @@ def button():
             time.sleep(1)
     
     if action == 5:
-        model.choose_note_by_date()
+        try: 
+            model.choose_note_by_date()
+        except:
+            time.sleep(1)
+            print('')
+            print('Заметок нет!')
+            time.sleep(1)
